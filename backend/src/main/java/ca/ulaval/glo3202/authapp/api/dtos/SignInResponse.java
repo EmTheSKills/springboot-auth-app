@@ -1,0 +1,12 @@
+package ca.ulaval.glo3202.authapp.api.dtos;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
+
+public class SignInResponse implements Serializable {
+    private static final long serialVersionUID = -8091879091924046844L;
+
+    @JsonProperty("token")
+    public String jwtToken;
+}
