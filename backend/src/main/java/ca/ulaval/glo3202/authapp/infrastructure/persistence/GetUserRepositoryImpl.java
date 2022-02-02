@@ -1,14 +1,5 @@
 package ca.ulaval.glo3202.authapp.infrastructure.persistence;
 
-import ca.ulaval.glo3202.authapp.application.dtos.UserCreationDto;
-import ca.ulaval.glo3202.authapp.application.dtos.UserPasswordCreationDto;
-import ca.ulaval.glo3202.authapp.domain.user.GetUserRepository;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 /*
 @Repository
 @Transactional
