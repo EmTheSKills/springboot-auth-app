@@ -7,6 +7,9 @@ import java.io.Serializable;
 public class SignInResponse implements Serializable {
     private static final long serialVersionUID = -8091879091924046844L;
 
+    @JsonProperty("username")
+    public String username;
+
     @JsonProperty("token")
     public String jwtToken;
 }

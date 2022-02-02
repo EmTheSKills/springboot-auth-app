@@ -28,6 +28,7 @@ public class UserCreationDto implements Serializable {
 
     public String lastName;
 
+    @Column(unique = true)
     public String username;
 
     public String email;

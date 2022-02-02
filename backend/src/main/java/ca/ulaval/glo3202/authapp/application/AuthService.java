@@ -37,13 +37,12 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        //UserCreationDto userDto = userRepository.findById()
-        if ("javainuse".equals(username)) {
-            return new User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
-                    new ArrayList<>());
-        } else {
+        UserCreationDto userDto = userRepository.findUserByUsername(username);
+        if (userDto == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
+        return new org.springframework.security.core.userdetails.User(userDto.username, userDto.password,
+                new ArrayList<>());
     }
 
     public UserCreationDto createUserAccount(SignUpDto dto) {

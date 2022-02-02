@@ -51,6 +51,7 @@ public class AuthController {
 
         SignInResponse signInResponse = new SignInResponse();
         signInResponse.jwtToken = token;
+        signInResponse.username = userDetails.getUsername();
 
         return ResponseEntity.ok(signInResponse);
     }
@@ -74,5 +75,10 @@ public class AuthController {
         UserCreationDto userCreationDto = authService.createUserAccount(signUpDto);
         SignUpResponse signUpResponse = signUpDtoMapper.toResponse(userCreationDto);
         return ResponseEntity.ok(signUpResponse);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Allo");
     }
 }
