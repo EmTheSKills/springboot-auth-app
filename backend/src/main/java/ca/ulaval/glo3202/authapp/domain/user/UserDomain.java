@@ -10,17 +10,15 @@ public class UserDomain {
     private final String lastName;
     private final String username;
     private final String email;
-    private UserEncryptPassword password;
     private final LocalDateTime creation;
 
 
-    public UserDomain(String firstName, String lastName, String username, String email, UserEncryptPassword password) {
+    public UserDomain(String firstName, String lastName, String username, String email) {
         this.id = new UserId();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.password = password;
         this.creation = LocalDateTime.now(Clock.systemDefaultZone());
     }
 
@@ -46,10 +44,6 @@ public class UserDomain {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getStringPassword() {
-        return password.getPassword();
     }
 
     public LocalDateTime getCreation() {

@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody SignInRequest signInRequest) throws Exception{
-        authenticate(signInRequest.username , signInRequest.password);
+        Authentication authenticate = authenticate(signInRequest.username , signInRequest.password);
 
         final UserDetails userDetails = authService.loadUserByUsername(signInRequest.username);
 
@@ -56,9 +57,9 @@ public class AuthController {
         return ResponseEntity.ok(signInResponse);
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private Authentication authenticate(String username, String password) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
