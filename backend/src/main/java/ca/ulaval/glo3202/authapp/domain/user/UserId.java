@@ -10,7 +10,7 @@ public class UserId {
         id = UUID.randomUUID();
     }
 
-    public String getId() {
+    public String getIdAsAString() {
         return id.toString();
     }
 }

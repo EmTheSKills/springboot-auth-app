@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "user")
 //@SecondaryTable(name = "password", pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
-public class UserCreationDto implements Serializable {
+public class UserDto implements Serializable {
 
-    public UserCreationDto(String id, String firstName, String lastName, String username, String email, LocalDateTime creation) {
+    public UserDto(String id, String firstName, String lastName, String username, String email, LocalDateTime creation) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -18,7 +18,7 @@ public class UserCreationDto implements Serializable {
         this.creation = creation;
     }
 
-    public UserCreationDto(){}
+    public UserDto(){}
 
     @Id
     public String id;

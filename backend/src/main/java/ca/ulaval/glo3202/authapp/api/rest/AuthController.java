@@ -1,14 +1,14 @@
 package ca.ulaval.glo3202.authapp.api.rest;
 
-import ca.ulaval.glo3202.authapp.api.assemblers.SignUpDtoAssembler;
-import ca.ulaval.glo3202.authapp.api.configuration.JwtTokenUtil;
+import ca.ulaval.glo3202.authapp.api.assemblers.AuthDtoAssembler;
+import ca.ulaval.glo3202.authapp.api.security.JwtTokenUtil;
 import ca.ulaval.glo3202.authapp.api.dtos.SignUpResponse;
 import ca.ulaval.glo3202.authapp.application.AuthService;
 import ca.ulaval.glo3202.authapp.api.dtos.SignInRequest;
 import ca.ulaval.glo3202.authapp.api.dtos.SignInResponse;
 import ca.ulaval.glo3202.authapp.api.dtos.SignUpRequest;
 import ca.ulaval.glo3202.authapp.application.dtos.SignUpDto;
-import ca.ulaval.glo3202.authapp.application.dtos.UserCreationDto;
+import ca.ulaval.glo3202.authapp.application.dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,14 +25,13 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private SignUpDtoAssembler signUpDtoMapper;
+    private AuthDtoAssembler authDtoMapper;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
 
     private final AuthService authService;
 
@@ -41,20 +40,29 @@ public class AuthController {
         this.authService = authService;
     }
 
-
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody SignInRequest signInRequest) throws Exception{
-        Authentication authenticate = authenticate(signInRequest.username , signInRequest.password);
-
-        final UserDetails userDetails = authService.loadUserByUsername(signInRequest.username);
-
-        final String token = jwtTokenUtil.generateToken(userDetails);
-
-        SignInResponse signInResponse = new SignInResponse();
-        signInResponse.jwtToken = token;
-        signInResponse.username = userDetails.getUsername();
+        authenticate(signInRequest.username , signInRequest.password);
+        UserDetails userDetails = authService.loadUserByUsername(signInRequest.username);
+        String token = jwtTokenUtil.generateToken(userDetails);
+        UserDto userDto = authService.getUserByUsername(signInRequest.username);
+        SignInResponse signInResponse = authDtoMapper.toSignInResponse(userDto, token);
 
         return ResponseEntity.ok(signInResponse);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<SignUpResponse> registerUser(@RequestBody SignUpRequest signUpRequest) {
+        SignUpDto signUpDto = authDtoMapper.toSignUpDto(signUpRequest);
+        UserDto userDto = authService.createUserAccount(signUpDto);
+        SignUpResponse signUpResponse = authDtoMapper.toSignUpResponse(userDto);
+
+        return ResponseEntity.ok(signUpResponse);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Allo");
     }
 
     private Authentication authenticate(String username, String password) throws Exception {
@@ -65,21 +73,6 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             System.out.println("INVALID_CREDENTIALS");
             throw new Exception("INVALID_CREDENTIALS", e);
-
         }
-    }
-
-
-    @PostMapping("/signup")
-    public ResponseEntity<SignUpResponse> registerUser(@RequestBody SignUpRequest signUpRequest) {
-        SignUpDto signUpDto = signUpDtoMapper.toDto(signUpRequest);
-        UserCreationDto userCreationDto = authService.createUserAccount(signUpDto);
-        SignUpResponse signUpResponse = signUpDtoMapper.toResponse(userCreationDto);
-        return ResponseEntity.ok(signUpResponse);
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Allo");
     }
 }

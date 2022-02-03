@@ -1,4 +1,4 @@
-package ca.ulaval.glo3202.authapp.api.configuration;
+package ca.ulaval.glo3202.authapp.api.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

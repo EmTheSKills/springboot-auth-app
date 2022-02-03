@@ -3,7 +3,7 @@ package ca.ulaval.glo3202.authapp.domain.user;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-public class UserDomain {
+public class User {
 
     private final UserId id;
     private final String firstName;
@@ -12,22 +12,17 @@ public class UserDomain {
     private final String email;
     private final LocalDateTime creation;
 
-
-    public UserDomain(String firstName, String lastName, String username, String email) {
-        this.id = new UserId();
+    public User( UserId id, String firstName, String lastName, String username, String email, LocalDateTime creation) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.creation = LocalDateTime.now(Clock.systemDefaultZone());
+        this.creation = creation;
     }
 
-    public UserId getUserId() {
-        return id;
-    }
-
-    public String getStringUserId() {
-        return id.getId();
+    public String getUserIdAsAString() {
+        return id.getIdAsAString();
     }
 
     public String getFirstName() {

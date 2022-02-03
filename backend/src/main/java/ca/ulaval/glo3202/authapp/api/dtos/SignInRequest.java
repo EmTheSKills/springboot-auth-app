@@ -1,5 +1,7 @@
 package ca.ulaval.glo3202.authapp.api.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public class SignInRequest implements Serializable {
@@ -8,6 +10,9 @@ public class SignInRequest implements Serializable {
 
     public SignInRequest(){};
 
+    @JsonProperty("username")
     public String username;
+
+    @JsonProperty("password")
     public String password;
 }

@@ -1,4 +1,4 @@
-package ca.ulaval.glo3202.authapp.api.configuration;
+package ca.ulaval.glo3202.authapp.api.security;
 
 import java.io.IOException;
 import java.io.Serializable;
