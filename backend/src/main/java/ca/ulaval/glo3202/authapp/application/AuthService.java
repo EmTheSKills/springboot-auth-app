@@ -1,11 +1,15 @@
 package ca.ulaval.glo3202.authapp.application;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
-import ca.ulaval.glo3202.authapp.application.assemblers.UserAssembler;
+import ca.ulaval.glo3202.authapp.api.dtos.SignUpRequest;
+import ca.ulaval.glo3202.authapp.application.dtos.assemblers.UserAssembler;
 import ca.ulaval.glo3202.authapp.application.dtos.CredentialDto;
 import ca.ulaval.glo3202.authapp.application.dtos.SignUpDto;
 import ca.ulaval.glo3202.authapp.application.dtos.UserDto;
+import ca.ulaval.glo3202.authapp.application.exception.UserNotFoundException;
+import ca.ulaval.glo3202.authapp.application.exception.UsernameAlreadyUseException;
 import ca.ulaval.glo3202.authapp.domain.repositories.CredentialRepository;
 import ca.ulaval.glo3202.authapp.domain.repositories.UserRepository;
 import ca.ulaval.glo3202.authapp.domain.user.*;
@@ -39,7 +43,6 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         CredentialDto credentials = credentialRepository.findById(username).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
         return new org.springframework.security.core.userdetails.User(credentials.username, credentials.password,
                 new ArrayList<>());
@@ -47,6 +50,7 @@ public class AuthService implements UserDetailsService {
 
     @Transactional
     public UserDto createUserAccount(SignUpDto dto) {
+        userAleardyExist(dto.username);
         User user = userFactory.createUser(dto);
         UserDto userDto = userAssembler.toUserCreationDto(user);
         CredentialDto credentialDto = userAssembler.toCredentialDto(user, bcryptEncoder.encode(dto.password));
@@ -56,5 +60,11 @@ public class AuthService implements UserDetailsService {
 
     public UserDto getUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
+    }
+
+    private void userAleardyExist(String username) {
+        if (getUserByUsername(username) != null) {
+            throw new UsernameAlreadyUseException();
+        }
     }
 }

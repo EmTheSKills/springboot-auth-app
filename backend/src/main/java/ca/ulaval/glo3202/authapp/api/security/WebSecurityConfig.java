@@ -1,5 +1,7 @@
 package ca.ulaval.glo3202.authapp.api.security;
 
+import ca.ulaval.glo3202.authapp.api.security.jwt.JwtAuthEntryPoint;
+import ca.ulaval.glo3202.authapp.api.security.jwt.JwtAuthRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,13 +23,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthEntryPoint jwtAuthEntryPoint;
 
     @Autowired
     private UserDetailsService jwtUserDetailsService;
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    private JwtAuthRequestFilter jwtAuthRequestFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,13 +54,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/api/auth/signin", "/api/auth/signup").permitAll().
                 // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
+                anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
-                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

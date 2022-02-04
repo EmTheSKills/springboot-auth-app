@@ -2,7 +2,9 @@ package ca.ulaval.glo3202.authapp.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SignUpResponse {
+import java.io.Serializable;
+
+public class SignUpResponse implements Serializable {
     @JsonProperty("id")
     public String id;
 

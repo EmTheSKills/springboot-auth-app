@@ -21,7 +21,4 @@ public class SignInResponse implements Serializable {
 
     @JsonProperty("email")
     public String email;
-
-    @JsonProperty("token")
-    public String token;
 }

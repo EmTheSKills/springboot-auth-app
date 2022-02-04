@@ -1,4 +1,4 @@
-package ca.ulaval.glo3202.authapp.application.assemblers;
+package ca.ulaval.glo3202.authapp.application.dtos.assemblers;
 
 import ca.ulaval.glo3202.authapp.application.dtos.CredentialDto;
 import ca.ulaval.glo3202.authapp.application.dtos.UserDto;

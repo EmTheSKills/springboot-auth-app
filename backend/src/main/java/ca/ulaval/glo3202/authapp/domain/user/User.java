@@ -1,6 +1,5 @@
 package ca.ulaval.glo3202.authapp.domain.user;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 
 public class User {

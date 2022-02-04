@@ -1,9 +1,7 @@
-package ca.ulaval.glo3202.authapp.api.security;
+package ca.ulaval.glo3202.authapp.api.security.jwt;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +11,8 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import javax.servlet.http.Cookie;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -38,6 +38,7 @@ public class JwtTokenUtil implements Serializable {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
+
     //for retrieveing any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
@@ -49,10 +50,14 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
+    public String generateStringifyCookieWithJwtToken(String username) {
+        return "token="+ generateToken(username) + ";HttpOnly";
+    }
+
     //generate token for user
-    public String generateToken(UserDetails userDetails) {
+    private String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        return doGenerateToken(claims, username);
     }
 
     //while creating the token -
@@ -63,7 +68,7 @@ public class JwtTokenUtil implements Serializable {
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + /*JWT_TOKEN_VALIDITY*/ + 180 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + /*JWT_TOKEN_VALIDITY*/ +180 * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
@@ -71,5 +76,15 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public String getAuthTokenFromCookies(Cookie[] cookies, String tokenKey) {
+        if (cookies == null) {
+            return null;
+        } else {
+            return Arrays.stream(cookies)
+                    .filter(e -> tokenKey.equals(e.getName()))
+                    .findAny().map(Cookie::getValue).orElse(null);
+        }
     }
 }

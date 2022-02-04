@@ -1,4 +1,4 @@
-package ca.ulaval.glo3202.authapp.api.assemblers;
+package ca.ulaval.glo3202.authapp.api.dtos.assemblers;
 
 import ca.ulaval.glo3202.authapp.api.dtos.SignInResponse;
 import ca.ulaval.glo3202.authapp.api.dtos.SignUpRequest;
@@ -32,14 +32,13 @@ public class AuthDtoAssembler {
         return response;
     }
 
-    public SignInResponse toSignInResponse(UserDto userDto, String token) {
+    public SignInResponse toSignInResponse(UserDto userDto) {
         SignInResponse response = new SignInResponse();
         response.id = userDto.id;
         response.firstName = userDto.firstName;
         response.lastName = userDto.lastName;
         response.username = userDto.username;
         response.email = userDto.email;
-        response.token = token;
 
         return response;
     }
