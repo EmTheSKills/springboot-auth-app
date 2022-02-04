@@ -1,14 +1,12 @@
 package ca.ulaval.glo3202.authapp.api.rest;
 
 import ca.ulaval.glo3202.authapp.api.dtos.assemblers.AuthDtoAssembler;
-import ca.ulaval.glo3202.authapp.api.exception.unauthorized.DisabledAccountException;
-import ca.ulaval.glo3202.authapp.api.exception.unauthorized.InvalidCredentialsException;
 import ca.ulaval.glo3202.authapp.api.security.jwt.JwtTokenUtil;
-import ca.ulaval.glo3202.authapp.api.dtos.SignUpResponse;
+import ca.ulaval.glo3202.authapp.api.dtos.auth.SignUpResponse;
 import ca.ulaval.glo3202.authapp.application.AuthService;
-import ca.ulaval.glo3202.authapp.api.dtos.SignInRequest;
-import ca.ulaval.glo3202.authapp.api.dtos.SignInResponse;
-import ca.ulaval.glo3202.authapp.api.dtos.SignUpRequest;
+import ca.ulaval.glo3202.authapp.api.dtos.auth.SignInRequest;
+import ca.ulaval.glo3202.authapp.api.dtos.auth.SignInResponse;
+import ca.ulaval.glo3202.authapp.api.dtos.auth.SignUpRequest;
 import ca.ulaval.glo3202.authapp.application.dtos.SignUpDto;
 import ca.ulaval.glo3202.authapp.application.dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -46,23 +44,18 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.username, signInRequest.password));
         UserDto userDto = authService.getUserByUsername(signInRequest.username);
-        SignInResponse signInResponse = authDtoMapper.toSignInResponse(userDto);
+        SignInResponse response = authDtoMapper.toSignInResponse(userDto);
         String cookie = jwtTokenUtil.generateStringifyCookieWithJwtToken(signInRequest.username);
 
-        return ResponseEntity.ok().header(SET_COOKIE, cookie).body(signInResponse);
+        return ResponseEntity.ok().header(SET_COOKIE, cookie).body(response);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<SignUpResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         SignUpDto signUpDto = authDtoMapper.toSignUpDto(signUpRequest);
         UserDto userDto = authService.createUserAccount(signUpDto);
-        SignUpResponse signUpResponse = authDtoMapper.toSignUpResponse(userDto);
+        SignUpResponse response = authDtoMapper.toSignUpResponse(userDto);
 
-        return ResponseEntity.status(CREATED).body(signUpResponse);
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Allo");
+        return ResponseEntity.status(CREATED).body(response);
     }
 }

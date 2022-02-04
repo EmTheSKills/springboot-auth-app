@@ -1,8 +1,8 @@
 package ca.ulaval.glo3202.authapp.api.dtos.assemblers;
 
-import ca.ulaval.glo3202.authapp.api.dtos.SignInResponse;
-import ca.ulaval.glo3202.authapp.api.dtos.SignUpRequest;
-import ca.ulaval.glo3202.authapp.api.dtos.SignUpResponse;
+import ca.ulaval.glo3202.authapp.api.dtos.auth.SignInResponse;
+import ca.ulaval.glo3202.authapp.api.dtos.auth.SignUpRequest;
+import ca.ulaval.glo3202.authapp.api.dtos.auth.SignUpResponse;
 import ca.ulaval.glo3202.authapp.application.dtos.SignUpDto;
 import ca.ulaval.glo3202.authapp.application.dtos.UserDto;
 import org.springframework.stereotype.Component;

@@ -1,14 +1,11 @@
 package ca.ulaval.glo3202.authapp.application;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
-import ca.ulaval.glo3202.authapp.api.dtos.SignUpRequest;
 import ca.ulaval.glo3202.authapp.application.dtos.assemblers.UserAssembler;
 import ca.ulaval.glo3202.authapp.application.dtos.CredentialDto;
 import ca.ulaval.glo3202.authapp.application.dtos.SignUpDto;
 import ca.ulaval.glo3202.authapp.application.dtos.UserDto;
-import ca.ulaval.glo3202.authapp.application.exception.UserNotFoundException;
 import ca.ulaval.glo3202.authapp.application.exception.UsernameAlreadyUseException;
 import ca.ulaval.glo3202.authapp.domain.repositories.CredentialRepository;
 import ca.ulaval.glo3202.authapp.domain.repositories.UserRepository;

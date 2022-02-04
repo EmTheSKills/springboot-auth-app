@@ -1,4 +1,4 @@
-package ca.ulaval.glo3202.authapp.api.dtos;
+package ca.ulaval.glo3202.authapp.api.dtos.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
