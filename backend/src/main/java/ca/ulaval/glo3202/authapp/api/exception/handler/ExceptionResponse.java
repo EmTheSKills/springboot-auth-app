@@ -22,5 +22,4 @@ public class ExceptionResponse {
         this.message = message;
         this.fields = fields;
     }
-
 }

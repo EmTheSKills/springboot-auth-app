@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 public class UserFactory {
 
     public User createUser(SignUpDto dto) {
-        UserId id = new UserId();
         LocalDateTime creation = LocalDateTime.now(Clock.systemDefaultZone());
-        return new User(id, dto.firstName, dto.lastName , dto.username, dto.email, creation);
+        return new User(dto.username, dto.firstName, dto.lastName , dto.email, creation);
     }
 }
