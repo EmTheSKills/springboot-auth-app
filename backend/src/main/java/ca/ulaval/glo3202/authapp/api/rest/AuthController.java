@@ -18,6 +18,8 @@ import javax.validation.Valid;
 
 import static org.springframework.http.HttpHeaders.EMPTY;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -41,6 +43,7 @@ public class AuthController {
         this.authService = authService;
     }
 
+    //@CrossOrigin(origins = "http://localhost/api", allowCredentials = "true")
     @PostMapping("/signin")
     public ResponseEntity<SignInResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.username, signInRequest.password));
@@ -48,7 +51,10 @@ public class AuthController {
         SignInResponse response = authDtoMapper.toSignInResponse(userDto);
         String cookie = jwtTokenUtil.generateStringifyCookieWithJwtToken(signInRequest.username);
 
-        return ResponseEntity.ok().header(SET_COOKIE, cookie).body(response);
+        return ResponseEntity.ok().header(SET_COOKIE, cookie).
+                                   header(ACCESS_CONTROL_EXPOSE_HEADERS, SET_COOKIE).
+                                   header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+                                   .body(response);
     }
 
     @PostMapping("/signup")

@@ -73,7 +73,7 @@ public class UserController {
         UserFullDetailsResponse response = userDtoAssembler.toUserFullDetailsResponse(userDto);
         return ResponseEntity.ok(response);
     }
-
+/*
     @PutMapping("/{username}/note/{id}")
     public ResponseEntity<UserFullDetailsResponse> updateNote(@Valid @RequestBody NoteRequest noteRequest, @PathVariable String username,
                                                    @PathVariable String id, Principal principal) {
@@ -84,4 +84,6 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
+ */
 }
