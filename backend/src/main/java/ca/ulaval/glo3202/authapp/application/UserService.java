@@ -5,6 +5,8 @@ import ca.ulaval.glo3202.authapp.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -17,5 +19,9 @@ public class UserService {
 
     public UserDto getUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
+    }
+
+    public List<UserDto> listUser() {
+        return userRepository.findAll();
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
+import static org.springframework.http.HttpHeaders.EMPTY;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -41,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
+    public ResponseEntity<SignInResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.username, signInRequest.password));
         UserDto userDto = authService.getUserByUsername(signInRequest.username);
         SignInResponse response = authDtoMapper.toSignInResponse(userDto);
@@ -57,5 +58,10 @@ public class AuthController {
         SignUpResponse response = authDtoMapper.toSignUpResponse(userDto);
 
         return ResponseEntity.status(CREATED).body(response);
+    }
+
+    @GetMapping("signout")
+    public ResponseEntity<Void> logoutUser() {
+        return ResponseEntity.ok().header(SET_COOKIE, jwtTokenUtil.emptyJwtCookie()).build();
     }
 }

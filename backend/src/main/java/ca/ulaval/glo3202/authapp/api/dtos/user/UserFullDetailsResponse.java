@@ -2,7 +2,7 @@ package ca.ulaval.glo3202.authapp.api.dtos.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserResponse {
+public class UserFullDetailsResponse {
     @JsonProperty("id")
     public String id;
 
