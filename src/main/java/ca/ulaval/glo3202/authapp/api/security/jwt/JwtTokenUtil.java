@@ -51,12 +51,11 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String generateStringifyCookieWithJwtToken(String username) {
-        //return "token="+ generateToken(username)+";Path=/api;HttpOnly;Domain=172.0.0.1";
-        return "token="+ generateToken(username)+";Path=/;Domain=127.0.0.1";
+        return "token="+ generateToken(username)+";Path=/api;HttpOnly;Domain=herokuapp.com";
     }
 
     public String emptyJwtCookie() {
-        return "token=;Path=/api;Domain=127.0.0.1";
+        return "token=;Path=/api;Domain=herokuapp.com";
     }
 
     //generate token for user
