@@ -1,20 +1,20 @@
-import React, { Suspense } from 'react'
-import { BrowserRouter } from 'react-router-dom'
-import Router from './router/Router'
-import Navbar from './shared/components/Navbar/Navbar'
-import { AuthenticationContextProvider } from './contexts/AuthenticationContextProvider'
+import React, { Suspense } from "react";
+import { BrowserRouter } from "react-router-dom";
+import Router from "./router/Router";
+import { UserContextProvider } from "./contexts/UserContextProvider";
+import Navbar from "./shared/components/Navbar/Navbar";
 
 const App = () => {
-    return (
-        <AuthenticationContextProvider>
-            <BrowserRouter>
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Navbar />
-                    <Router />
-                </Suspense>
-            </BrowserRouter>
-        </AuthenticationContextProvider>
-    )
-}
+  return (
+    <UserContextProvider>
+      <BrowserRouter>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Navbar />
+          <Router />
+        </Suspense>
+      </BrowserRouter>
+    </UserContextProvider>
+  );
+};
 
-export default App
+export default App;
