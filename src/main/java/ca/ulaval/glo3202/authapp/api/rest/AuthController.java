@@ -10,20 +10,22 @@ import ca.ulaval.glo3202.authapp.api.dtos.auth.SignUpRequest;
 import ca.ulaval.glo3202.authapp.application.dtos.SignUpDto;
 import ca.ulaval.glo3202.authapp.application.dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
-import static org.springframework.http.HttpHeaders.EMPTY;
+import java.security.Principal;
+
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
-import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
-import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS;
 import static org.springframework.http.HttpStatus.CREATED;
 
+
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "https://auth-app-react-frontend.herokuapp.com", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -43,7 +45,6 @@ public class AuthController {
         this.authService = authService;
     }
 
-    //@CrossOrigin(origins = "http://localhost/api", allowCredentials = "true")
     @PostMapping("/signin")
     public ResponseEntity<SignInResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.username, signInRequest.password));
@@ -51,10 +52,7 @@ public class AuthController {
         SignInResponse response = authDtoMapper.toSignInResponse(userDto);
         String cookie = jwtTokenUtil.generateStringifyCookieWithJwtToken(signInRequest.username);
 
-        return ResponseEntity.ok().header(SET_COOKIE, cookie).
-                                   header(ACCESS_CONTROL_EXPOSE_HEADERS, SET_COOKIE).
-                                   header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-                                   .body(response);
+        return ResponseEntity.ok().header(SET_COOKIE, cookie).body(response);
     }
 
     @PostMapping("/signup")
@@ -69,5 +67,12 @@ public class AuthController {
     @GetMapping("signout")
     public ResponseEntity<Void> logoutUser() {
         return ResponseEntity.ok().header(SET_COOKIE, jwtTokenUtil.emptyJwtCookie()).build();
+    }
+
+    @GetMapping("islogged")
+    public ResponseEntity<SignInResponse> isLoggedIn(Principal principal) {
+        UserDto userDto = authService.getUserByUsername(principal.getName());
+        SignInResponse response = authDtoMapper.toSignInResponse(userDto);
+        return ResponseEntity.ok(response);
     }
 }
