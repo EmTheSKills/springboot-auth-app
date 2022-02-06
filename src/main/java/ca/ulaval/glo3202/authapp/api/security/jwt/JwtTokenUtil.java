@@ -51,7 +51,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String generateStringifyCookieWithJwtToken(String username) {
-        return "token="+ generateToken(username)+";Path=/api;HttpOnly;SameSite=None";
+        return "token="+ generateToken(username)+";Path=/api;HttpOnly;Secure;SameSite=None";
     }
 
     public String emptyJwtCookie() {
