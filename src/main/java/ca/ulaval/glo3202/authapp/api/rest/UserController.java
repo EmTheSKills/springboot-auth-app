@@ -20,7 +20,7 @@ import java.security.Principal;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@CrossOrigin(origins = "https://auth-app-react-frontend.herokuapp.com", allowCredentials = "true")
+//@CrossOrigin(origins = "https://auth-app-react-frontend.herokuapp.com", allowCredentials = "true")
 //@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/users")
 public class UserController {

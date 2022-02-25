@@ -50,18 +50,18 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateStringifyCookieWithJwtToken(String username) {
-        //return "token="+ generateToken(username)+";Path=/api;HttpOnly";
-        return "token="+ generateToken(username)+";Path=/api;HttpOnly;Secure;SameSite=None";
+    public String setCookieToken(String token) {
+        return "authSessionId="+ token +";Path=/api;HttpOnly";
+        //return "token="+ generateToken(username)+";Path=/api;HttpOnly;Secure;SameSite=None";
     }
 
-    public String emptyJwtCookie() {
-        //return "token=;Path=/api;HttpOnly";
-        return "token=;Path=/api;HttpOnly;Secure;SameSite=None";
+    public String emptyCookieToken() {
+        return "authSessionId=;Path=/api;HttpOnly";
+        //return "token=;Path=/api;HttpOnly;Secure;SameSite=None";
     }
 
     //generate token for user
-    private String generateToken(String username) {
+    public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, username);
     }
