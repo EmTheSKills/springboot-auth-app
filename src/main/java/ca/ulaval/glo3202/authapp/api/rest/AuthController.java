@@ -72,7 +72,7 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<SignInResponse> isLoggedIn(@CookieValue(name = "authSessionId") String token, Principal principal) {
+    public ResponseEntity<SignInResponse> isLoggedIn(@CookieValue(name = "token") String token, Principal principal) {
         UserDto userDto = authService.getUserByUsername(principal.getName());
 
         SignInResponse response = authDtoMapper.toSignInResponse(userDto, token);
