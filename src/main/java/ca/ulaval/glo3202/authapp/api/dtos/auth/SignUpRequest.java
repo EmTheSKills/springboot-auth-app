@@ -2,6 +2,7 @@ package ca.ulaval.glo3202.authapp.api.dtos.auth;
 
 import static ca.ulaval.glo3202.authapp.api.validation.ValidationParameters.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -31,6 +32,7 @@ public class SignUpRequest implements Serializable {
     public String email;
 
     @NotBlank(message = BLANK_OR_EMPTY_MESSAGE)
+    @Pattern(regexp = PASSWORD_REGEX, message = INVALID_PASSWORD_MESSAGE)
     @JsonProperty("password")
     public String password;
 }

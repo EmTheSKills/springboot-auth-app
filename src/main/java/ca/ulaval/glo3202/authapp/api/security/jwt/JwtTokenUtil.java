@@ -51,7 +51,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String setCookieToken(String token) {
-        return "session-token="+ token +";Path=/;HttpOnly;Secure;SameSite=None";
+        return "session-token="+ token +";Path=/;HttpOnly;Max-Age="+JWT_TOKEN_VALIDITY+";Secure;SameSite=None";
         //return "token="+ generateToken(username)+";Path=/api;HttpOnly;Secure;SameSite=None";
     }
 
