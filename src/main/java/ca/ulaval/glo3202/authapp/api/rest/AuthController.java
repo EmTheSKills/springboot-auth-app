@@ -23,8 +23,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 
 @RestController
-//@CrossOrigin(origins = "https://auth-app-react-frontend.herokuapp.com", allowCredentials = "true")
-//@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -51,7 +49,7 @@ public class AuthController {
         String authToken = tokenUtil.generateToken(signInRequest.username);
         String cookie = tokenUtil.setCookieToken(authToken);
 
-        SignInResponse response = authDtoMapper.toSignInResponse(userDto, authToken);
+        SignInResponse response = authDtoMapper.toSignInResponse(userDto);
 
         return ResponseEntity.ok().header(SET_COOKIE, cookie).body(response);
     }
@@ -72,10 +70,10 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<SignInResponse> isLoggedIn(@CookieValue(name = "token") String token, Principal principal) {
+    public ResponseEntity<SignInResponse> getLoggedInUser(Principal principal) {
         UserDto userDto = authService.getUserByUsername(principal.getName());
 
-        SignInResponse response = authDtoMapper.toSignInResponse(userDto, token);
+        SignInResponse response = authDtoMapper.toSignInResponse(userDto);
 
         return ResponseEntity.ok(response);
     }

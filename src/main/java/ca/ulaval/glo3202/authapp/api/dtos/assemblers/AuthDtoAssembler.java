@@ -31,13 +31,12 @@ public class AuthDtoAssembler {
         return response;
     }
 
-    public SignInResponse toSignInResponse(UserDto userDto, String token) {
+    public SignInResponse toSignInResponse(UserDto userDto) {
         SignInResponse response = new SignInResponse();
         response.username = userDto.username;
         response.firstName = userDto.firstName;
         response.lastName = userDto.lastName;
         response.email = userDto.email;
-        response.token = token;
 
         return response;
     }
