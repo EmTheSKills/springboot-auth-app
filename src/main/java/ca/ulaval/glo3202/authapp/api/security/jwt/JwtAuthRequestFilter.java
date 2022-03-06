@@ -48,7 +48,7 @@ public class JwtAuthRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        String jwtToken = jwtTokenUtil.getAuthTokenFromCookies(request.getCookies(), "token");
+        String jwtToken = jwtTokenUtil.getAuthTokenFromCookies(request.getCookies(), "session-token");
         String username;
         try {
             if (jwtToken != null) {

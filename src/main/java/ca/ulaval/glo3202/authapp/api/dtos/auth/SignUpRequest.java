@@ -31,6 +31,7 @@ public class SignUpRequest implements Serializable {
     public String email;
 
     @NotBlank(message = BLANK_OR_EMPTY_MESSAGE)
+    @Pattern(regexp = PASSWORD_REGEX, message = INVALID_PASSWORD_MESSAGE)
     @JsonProperty("password")
     public String password;
 }
