@@ -2,7 +2,6 @@ package ca.ulaval.glo3202.authapp.api.dtos.auth;
 
 import static ca.ulaval.glo3202.authapp.api.validation.ValidationParameters.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
